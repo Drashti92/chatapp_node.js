@@ -1,6 +1,6 @@
 var app = require('express')();
 var http = require('http').Server(app);
-var io = require('C:/Users/drash/Desktop/chatexample/node_modules/socket.io')(http);
+var io = require('socket.io')(http);
 
 
 
@@ -8,6 +8,10 @@ var io = require('C:/Users/drash/Desktop/chatexample/node_modules/socket.io')(ht
 
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
+});
+
+io.emit('some event', {
+  for: 'everyone'
 });
 
 io.on('connection', function(socket){
@@ -19,11 +23,13 @@ console.log('message: ' + msg);
 
     io.emit('chat message', msg);
 
- socket.on('disconnect', function () {
+  });
+ 
+socket.on('disconnect', function () {
 
         console.log('Your Client disconnected');
 
-    });
+  
 
   });
 
@@ -31,11 +37,11 @@ console.log('message: ' + msg);
 
 
 
-
-
-
-
-http.listen(3000, function(){
-  console.log('listening on *:3000');
+var port = process.env.PORT || 3000; 
+http.listen(port, function () {
+   console.log('listening on *:http://localhost:3000');
 });
+
+
+
 
